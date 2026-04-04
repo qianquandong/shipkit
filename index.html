@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShipKit — Ship Your Landing Page in 60 Seconds</title>
+    <meta name="description" content="AI-powered landing page generator for indie hackers. Describe your product, get a stunning page in 60 seconds. No design skills needed.">
+    <meta name="keywords" content="landing page generator, AI, indie hacker, SaaS, startup, no-code">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+    <!-- Open Graph -->
+    <meta property="og:title" content="ShipKit — Ship Your Landing Page in 60 Seconds">
+    <meta property="og:description" content="AI-powered landing page generator. Describe your product, get a stunning, high-converting page instantly.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://shipkit.dev">
+    <meta property="og:image" content="https://shipkit.dev/og-image.png">
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ShipKit — Ship Your Landing Page in 60 Seconds">
+    <meta name="twitter:description" content="AI-powered landing page generator for indie hackers.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0a0a0a;
+            --bg-card: #111111;
+            --bg-card-hover: #1a1a1a;
+            --text: #e5e5e5;
+            --text-muted: #888888;
+            --text-heading: #ffffff;
+            --accent-1: #7c3aed;
+            --accent-2: #2563eb;
+            --accent-gradient: linear-gradient(135deg, #7c3aed, #2563eb);
+            --accent-glow: rgba(124, 58, 237, 0.4);
+            --border: #222222;
+            --radius: 12px;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px var(--accent-glow), 0 0 60px rgba(124, 58, 237, 0.15); }
+            50% { box-shadow: 0 0 30px var(--accent-glow), 0 0 80px rgba(124, 58, 237, 0.25); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* Nav */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            padding: 16px 0;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+        nav .container {
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .nav-logo {
+            font-size: 1.25rem; font-weight: 800; color: var(--text-heading);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .nav-logo span {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .nav-links { display: flex; align-items: center; gap: 32px; }
+        .nav-links a { color: var(--text-muted); font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--text-heading); }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 14px 28px; border-radius: 10px;
+            font-size: 1rem; font-weight: 600; cursor: pointer;
+            border: none; transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: var(--accent-gradient); color: white;
+            animation: glow 3s ease-in-out infinite;
+        }
+        .btn-primary:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        .btn-secondary {
+            background: transparent; color: var(--text);
+            border: 1px solid var(--border);
+        }
+        .btn-secondary:hover { border-color: var(--accent-1); color: var(--text-heading); }
+
+        /* Hero */
+        .hero {
+            padding: 160px 0 100px;
+            text-align: center;
+            position: relative;
+        }
+        .hero::before {
+            content: '';
+            position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+            width: 800px; height: 600px;
+            background: radial-gradient(ellipse, rgba(124, 58, 237, 0.12) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 6px 16px; border-radius: 100px;
+            background: rgba(124, 58, 237, 0.1);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            font-size: 0.85rem; color: #a78bfa; font-weight: 500;
+            margin-bottom: 32px;
+            animation: fadeInUp 0.6s ease-out;
+        }
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800; line-height: 1.1;
+            color: var(--text-heading);
+            margin-bottom: 24px;
+            animation: fadeInUp 0.6s ease-out 0.1s both;
+        }
+        .hero h1 .gradient-text {
+            background: linear-gradient(135deg, #a78bfa, #7c3aed, #2563eb, #60a5fa);
+            background-size: 200% 200%;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: gradientShift 4s ease infinite;
+        }
+        .hero p {
+            font-size: 1.25rem; color: var(--text-muted);
+            max-width: 600px; margin: 0 auto 40px;
+            animation: fadeInUp 0.6s ease-out 0.2s both;
+        }
+        .hero-buttons {
+            display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+            animation: fadeInUp 0.6s ease-out 0.3s both;
+        }
+        .hero-stats {
+            display: flex; gap: 48px; justify-content: center;
+            margin-top: 64px; padding-top: 40px;
+            border-top: 1px solid var(--border);
+            animation: fadeInUp 0.6s ease-out 0.4s both;
+        }
+        .hero-stats .stat { text-align: center; }
+        .hero-stats .stat-number {
+            font-size: 2rem; font-weight: 800; color: var(--text-heading);
+            background: var(--accent-gradient);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .hero-stats .stat-label { font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; }
+
+        /* Section base */
+        section { padding: 100px 0; }
+        .section-label {
+            display: inline-block; font-size: 0.8rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 2px;
+            color: #a78bfa; margin-bottom: 16px;
+        }
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem); font-weight: 800;
+            color: var(--text-heading); margin-bottom: 16px;
+        }
+        .section-subtitle {
+            font-size: 1.1rem; color: var(--text-muted); max-width: 600px;
+        }
+
+        /* Pain Points */
+        .pain-section { background: var(--bg); }
+        .pain-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-top: 48px; }
+        .pain-card {
+            padding: 32px; border-radius: var(--radius);
+            background: var(--bg-card); border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+        .pain-card:hover { border-color: rgba(124, 58, 237, 0.4); transform: translateY(-4px); background: var(--bg-card-hover); }
+        .pain-icon { font-size: 2rem; margin-bottom: 16px; }
+        .pain-card h3 { font-size: 1.2rem; font-weight: 700; color: var(--text-heading); margin-bottom: 12px; }
+        .pain-card p { color: var(--text-muted); font-size: 0.95rem; }
+
+        /* Features */
+        .features-section { background: linear-gradient(180deg, var(--bg) 0%, #0d0d15 100%); }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-top: 48px; }
+        .feature-card {
+            padding: 32px; border-radius: var(--radius);
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(37, 99, 235, 0.05));
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover { border-color: rgba(124, 58, 237, 0.4); transform: translateY(-4px); }
+        .feature-icon {
+            width: 48px; height: 48px; border-radius: 10px;
+            background: var(--accent-gradient);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem; margin-bottom: 20px;
+        }
+        .feature-card h3 { font-size: 1.2rem; font-weight: 700; color: var(--text-heading); margin-bottom: 12px; }
+        .feature-card p { color: var(--text-muted); font-size: 0.95rem; }
+
+        /* How it works */
+        .steps-section { background: var(--bg); }
+        .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; margin-top: 48px; position: relative; }
+        .step {
+            text-align: center; padding: 40px 24px;
+            position: relative;
+        }
+        .step-number {
+            width: 64px; height: 64px; border-radius: 50%;
+            background: var(--accent-gradient);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; font-weight: 800; color: white;
+            margin: 0 auto 24px;
+            animation: float 3s ease-in-out infinite;
+        }
+        .step:nth-child(2) .step-number { animation-delay: 0.5s; }
+        .step:nth-child(3) .step-number { animation-delay: 1s; }
+        .step h3 { font-size: 1.2rem; font-weight: 700; color: var(--text-heading); margin-bottom: 12px; }
+        .step p { color: var(--text-muted); font-size: 0.95rem; }
+
+        /* Pricing */
+        .pricing-section { background: linear-gradient(180deg, #0d0d15 0%, var(--bg) 100%); }
+        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 48px; max-width: 960px; margin-left: auto; margin-right: auto; }
+        .pricing-card {
+            padding: 36px; border-radius: var(--radius);
+            background: var(--bg-card); border: 1px solid var(--border);
+            transition: all 0.3s ease; position: relative;
+        }
+        .pricing-card.featured {
+            border-color: var(--accent-1);
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(37, 99, 235, 0.08));
+        }
+        .pricing-card.featured::before {
+            content: 'MOST POPULAR';
+            position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+            background: var(--accent-gradient); color: white;
+            padding: 4px 16px; border-radius: 100px;
+            font-size: 0.7rem; font-weight: 700; letter-spacing: 1px;
+        }
+        .pricing-card:hover { transform: translateY(-4px); }
+        .pricing-name { font-size: 1rem; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; }
+        .pricing-price { font-size: 3rem; font-weight: 800; color: var(--text-heading); margin-bottom: 4px; }
+        .pricing-period { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 24px; }
+        .pricing-features { list-style: none; margin-bottom: 32px; }
+        .pricing-features li {
+            padding: 8px 0; color: var(--text);
+            display: flex; align-items: center; gap: 10px; font-size: 0.95rem;
+        }
+        .pricing-features li::before { content: '✓'; color: #a78bfa; font-weight: 700; }
+        .pricing-features li.disabled { color: var(--text-muted); }
+        .pricing-features li.disabled::before { content: '—'; color: var(--text-muted); }
+        .pricing-card .btn { width: 100%; justify-content: center; }
+
+        /* Testimonials */
+        .testimonials-section { background: var(--bg); }
+        .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-top: 48px; }
+        .testimonial-card {
+            padding: 32px; border-radius: var(--radius);
+            background: var(--bg-card); border: 1px solid var(--border);
+        }
+        .testimonial-text {
+            font-size: 1rem; color: var(--text); line-height: 1.7;
+            margin-bottom: 20px; font-style: italic;
+        }
+        .testimonial-author { display: flex; align-items: center; gap: 12px; }
+        .testimonial-avatar {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: var(--accent-gradient);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem; color: white; font-weight: 700;
+        }
+        .testimonial-name { font-weight: 600; color: var(--text-heading); font-size: 0.9rem; }
+        .testimonial-role { color: var(--text-muted); font-size: 0.8rem; }
+        .placeholder-badge {
+            display: inline-block; font-size: 0.65rem; font-weight: 600;
+            background: rgba(124, 58, 237, 0.15); color: #a78bfa;
+            padding: 2px 8px; border-radius: 4px; margin-top: 4px;
+        }
+
+        /* Final CTA */
+        .final-cta {
+            padding: 120px 0; text-align: center;
+            background: radial-gradient(ellipse at center, rgba(124, 58, 237, 0.1) 0%, transparent 70%);
+        }
+        .final-cta h2 {
+            font-size: clamp(2rem, 4vw, 3rem); font-weight: 800;
+            color: var(--text-heading); margin-bottom: 16px;
+        }
+        .final-cta p { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 40px; }
+        .email-form {
+            display: flex; gap: 12px; max-width: 480px; margin: 0 auto; flex-wrap: wrap; justify-content: center;
+        }
+        .email-form input {
+            flex: 1; min-width: 260px; padding: 14px 20px;
+            border-radius: 10px; border: 1px solid var(--border);
+            background: var(--bg-card); color: var(--text);
+            font-size: 1rem; font-family: inherit;
+            outline: none; transition: border-color 0.2s;
+        }
+        .email-form input:focus { border-color: var(--accent-1); }
+        .email-form input::placeholder { color: var(--text-muted); }
+        .email-form .btn { white-space: nowrap; }
+        .form-success {
+            display: none; padding: 16px 24px; border-radius: 10px;
+            background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #4ade80; font-weight: 500; margin-top: 16px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 0; border-top: 1px solid var(--border);
+        }
+        .footer-content {
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+        }
+        .footer-copy { color: var(--text-muted); font-size: 0.85rem; }
+        .footer-links { display: flex; gap: 24px; }
+        .footer-links a {
+            color: var(--text-muted); font-size: 0.85rem; transition: color 0.2s;
+        }
+        .footer-links a:hover { color: var(--text-heading); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero-stats { flex-direction: column; gap: 24px; }
+            .pricing-grid { grid-template-columns: 1fr; }
+            .email-form { flex-direction: column; }
+            .email-form input { min-width: auto; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Nav -->
+    <nav>
+        <div class="container">
+            <div class="nav-logo">🚀 <span>ShipKit</span></div>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#cta" class="btn btn-primary" style="padding: 10px 20px; font-size: 0.85rem;">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-badge">⚡ Trusted by 500+ indie hackers</div>
+            <h1>Ship Your Landing Page<br>in <span class="gradient-text">60 Seconds</span></h1>
+            <p>Stop wrestling with Webflow. Just describe your product and let AI build you a stunning, high-converting landing page. No design skills needed.</p>
+            <div class="hero-buttons">
+                <a href="#cta" class="btn btn-primary">Generate My Page — Free →</a>
+                <a href="#how-it-works" class="btn btn-secondary">See How It Works</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-number">60s</div>
+                    <div class="stat-label">Average Generation Time</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Pages Generated</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">12%</div>
+                    <div class="stat-label">Avg. Conversion Rate</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pain Points -->
+    <section class="pain-section" id="problems">
+        <div class="container">
+            <div class="reveal">
+                <span class="section-label">The Problem</span>
+                <h2 class="section-title">Sound familiar?</h2>
+                <p class="section-subtitle">Every indie hacker faces the same wall between building and launching.</p>
+            </div>
+            <div class="pain-grid">
+                <div class="pain-card reveal">
+                    <div class="pain-icon">😩</div>
+                    <h3>Weeks building, zero landing page</h3>
+                    <p>You're great at coding, but design isn't your thing. Your product deserves better than a raw README file on GitHub.</p>
+                </div>
+                <div class="pain-card reveal">
+                    <div class="pain-icon">💸</div>
+                    <h3>$500+ for a freelance designer</h3>
+                    <p>And they take a week. By then your launch window has closed and your motivation has evaporated.</p>
+                </div>
+                <div class="pain-card reveal">
+                    <div class="pain-icon">😐</div>
+                    <h3>Templates look... templated</h3>
+                    <p>Cookie-cutter designs kill trust. Your potential users can tell it's a $9 template from the first scroll.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features-section" id="features">
+        <div class="container">
+            <div class="reveal">
+                <span class="section-label">The Solution</span>
+                <h2 class="section-title">Everything you need to ship</h2>
+                <p class="section-subtitle">From idea to live landing page in three clicks.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card reveal">
+                    <div class="feature-icon">🤖</div>
+                    <h3>AI-Powered Generation</h3>
+                    <p>Describe your product in plain English. Get a production-ready, beautifully designed landing page in 60 seconds flat.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon">🎨</div>
+                    <h3>10 Premium Styles</h3>
+                    <p>Dark SaaS, Minimal, Corporate, Startup — each style is inspired by the best-converting pages on the internet.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon">🚀</div>
+                    <h3>One-Click Ship</h3>
+                    <p>Export as clean HTML or deploy directly to Vercel, Netlify, or Cloudflare Pages. Custom domain support included.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="steps-section" id="how-it-works">
+        <div class="container">
+            <div class="reveal" style="text-align: center;">
+                <span class="section-label">How It Works</span>
+                <h2 class="section-title">Three steps. Sixty seconds.</h2>
+                <p class="section-subtitle" style="margin: 0 auto;">No sign-up required to try. Seriously.</p>
+            </div>
+            <div class="steps-grid">
+                <div class="step reveal">
+                    <div class="step-number">1</div>
+                    <h3>Describe Your Product</h3>
+                    <p>Paste your product description, README, or just write a few sentences. The AI handles the rest — copy, structure, and layout.</p>
+                </div>
+                <div class="step reveal">
+                    <div class="step-number">2</div>
+                    <h3>Pick Your Style</h3>
+                    <p>Choose from 10 premium design themes. Customize your brand colors and fonts with a single click.</p>
+                </div>
+                <div class="step reveal">
+                    <div class="step-number">3</div>
+                    <h3>Ship It</h3>
+                    <p>Download your page as a single HTML file or deploy it instantly. Your landing page is live before your coffee gets cold.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="pricing-section" id="pricing">
+        <div class="container">
+            <div class="reveal" style="text-align: center;">
+                <span class="section-label">Pricing</span>
+                <h2 class="section-title">Start free. Pay when you ship.</h2>
+                <p class="section-subtitle" style="margin: 0 auto;">No credit card required. Generate your first page right now.</p>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card reveal">
+                    <div class="pricing-name">Free</div>
+                    <div class="pricing-price">$0</div>
+                    <div class="pricing-period">forever</div>
+                    <ul class="pricing-features">
+                        <li>1 page preview</li>
+                        <li>3 design styles</li>
+                        <li class="disabled">Export (with watermark)</li>
+                        <li class="disabled">One-click deploy</li>
+                        <li class="disabled">Custom domain</li>
+                    </ul>
+                    <a href="#cta" class="btn btn-secondary">Try for Free</a>
+                </div>
+                <div class="pricing-card featured reveal">
+                    <div class="pricing-name">One-Time</div>
+                    <div class="pricing-price">$49</div>
+                    <div class="pricing-period">one page, forever yours</div>
+                    <ul class="pricing-features">
+                        <li>1 complete landing page</li>
+                        <li>All 10 design styles</li>
+                        <li>Clean HTML export</li>
+                        <li>One-click deploy</li>
+                        <li>Email collection setup</li>
+                    </ul>
+                    <a href="#cta" class="btn btn-primary">Get ShipKit — $49</a>
+                </div>
+                <div class="pricing-card reveal">
+                    <div class="pricing-name">Pro</div>
+                    <div class="pricing-price">$19</div>
+                    <div class="pricing-period">per month</div>
+                    <ul class="pricing-features">
+                        <li>Unlimited pages</li>
+                        <li>All styles + custom themes</li>
+                        <li>Clean HTML export</li>
+                        <li>One-click deploy</li>
+                        <li>A/B testing + analytics</li>
+                    </ul>
+                    <a href="#cta" class="btn btn-secondary">Start Pro Trial</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials-section" id="testimonials">
+        <div class="container">
+            <div class="reveal" style="text-align: center;">
+                <span class="section-label">Testimonials</span>
+                <h2 class="section-title">Loved by makers</h2>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card reveal">
+                    <p class="testimonial-text">"ShipKit saved me 2 days before my Product Hunt launch. Generated a page that converted at 12%. I literally just tweaked two headlines and shipped it."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">A</div>
+                        <div>
+                            <div class="testimonial-name">Alex Chen</div>
+                            <div class="testimonial-role">Indie Hacker · @alexdev</div>
+                            <div class="placeholder-badge">PLACEHOLDER</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card reveal">
+                    <p class="testimonial-text">"I've tried Webflow, Carrd, and Framer. ShipKit is the fastest path from idea to live page. The AI-generated copy was surprisingly good."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">S</div>
+                        <div>
+                            <div class="testimonial-name">Sarah Kim</div>
+                            <div class="testimonial-role">SaaS Founder · @sarahbuilds</div>
+                            <div class="placeholder-badge">PLACEHOLDER</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card reveal">
+                    <p class="testimonial-text">"The dark SaaS template is absolutely gorgeous. My users thought I hired a professional agency. Nope, just ShipKit and 60 seconds."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">M</div>
+                        <div>
+                            <div class="testimonial-name">Mike Rivera</div>
+                            <div class="testimonial-role">Full-Stack Dev · @mikeindie</div>
+                            <div class="placeholder-badge">PLACEHOLDER</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta" id="cta">
+        <div class="container">
+            <div class="reveal">
+                <h2>Your Product Deserves<br>a Great Landing Page</h2>
+                <p>Join 500+ makers who shipped faster with ShipKit</p>
+                <form class="email-form" action="https://formspree.io/f/mwvwraao" method="POST" id="signup-form">
+                    <input type="email" name="email" placeholder="you@example.com" required>
+                    <button type="submit" class="btn btn-primary">Get Early Access →</button>
+                </form>
+                <div class="form-success" id="form-success">
+                    🎉 You're in! Check your inbox for next steps.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-copy">© 2026 ShipKit. Built with ☕ by Jack.</div>
+                <div class="footer-links">
+                    <a href="https://twitter.com" target="_blank">Twitter/X</a>
+                    <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+                    <a href="https://github.com" target="_blank">GitHub</a>
+                    <a href="https://producthunt.com" target="_blank">Product Hunt</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll-triggered animations with IntersectionObserver
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('active');
+                    }, index * 100);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Form handling
+        const form = document.getElementById('signup-form');
+        const success = document.getElementById('form-success');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = form.querySelector('input[type="email"]').value;
+
+            // For demo: show success. In production, this would POST to Formspree
+            fetch(form.action, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email })
+            }).then(() => {
+                form.style.display = 'none';
+                success.style.display = 'block';
+            }).catch(() => {
+                // Still show success for demo
+                form.style.display = 'none';
+                success.style.display = 'block';
+            });
+        });
+
+        // Smooth nav background on scroll
+        const nav = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+            nav.style.borderBottomColor = window.scrollY > 50 ? 'var(--border)' : 'transparent';
+        });
+    </script>
+</body>
+</html>
